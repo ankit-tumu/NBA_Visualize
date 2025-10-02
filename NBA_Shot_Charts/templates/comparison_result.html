@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Player Comparison: {{ player1_name }} vs {{ player2_name }}{% endblock %}
+
+{% block content %}
+<section>
+    <a href="{{ url_for('main.compare') }}" role="button" class="secondary">← New Comparison</a>
+    
+    <h2 style="text-align: center;">{{ player1_name }} vs {{ player2_name }}</h2>
+    
+    <!-- Shot Charts Side by Side -->
+    <article>
+        <div class="grid">
+            <div style="text-align: center;">
+                <h4>{{ player1_name }} - {{ season1_id }}</h4>
+                <div class="chart-container">
+                    {{ chart1_html|safe }}
+                </div>
+                <table style="margin-top: 20px;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Total Shots:</strong></td>
+                            <td>{{ player1_stats.total_shots }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Made Shots:</strong></td>
+                            <td>{{ player1_stats.made_shots }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FG%:</strong></td>
+                            <td>{{ player1_stats.fg_percentage }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center;">
+                <h4>{{ player2_name }} - {{ season2_id }}</h4>
+                <div class="chart-container">
+                    {{ chart2_html|safe }}
+                </div>
+                <table style="margin-top: 20px;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Total Shots:</strong></td>
+                            <td>{{ player2_stats.total_shots }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Made Shots:</strong></td>
+                            <td>{{ player2_stats.made_shots }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FG%:</strong></td>
+                            <td>{{ player2_stats.fg_percentage }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+
+    <!-- Detailed Stats Comparison Table -->
+    <article>
+        <h3 style="text-align: center;">Zone-by-Zone Comparison</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="border-right: 3px solid #2c3e50;">Shot Zone</th>
+                    <th colspan="3" style="border-right: 3px solid #2c3e50;">{{ player1_name }}</th>
+                    <th colspan="3">{{ player2_name }}</th>
+                </tr>
+                <tr>
+                    <th style="border-right: 3px solid #2c3e50;"></th>
+                    <th>Made</th>
+                    <th>Attempted</th>
+                    <th style="border-right: 3px solid #2c3e50;">FG%</th>
+                    <th>Made</th>
+                    <th>Attempted</th>
+                    <th>FG%</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for zone in zone_order %}
+                {% set stats1 = player1_zone_stats.get(zone, {'FGM': 0, 'FGA': 0, 'FG_PCT': 0}) %}
+                {% set stats2 = player2_zone_stats.get(zone, {'FGM': 0, 'FGA': 0, 'FG_PCT': 0}) %}
+                <tr>
+                    <td style="border-right: 3px solid #2c3e50;"><strong>{{ zone }}</strong></td>
+                    <td>{{ stats1.FGM }}</td>
+                    <td>{{ stats1.FGA }}</td>
+                    <td {% if stats1.FG_PCT > stats2.FG_PCT and stats1.FGA > 0 %}style="background-color: rgba(39, 174, 96, 0.2); border-right: 3px solid #2c3e50;"{% else %}style="border-right: 3px solid #2c3e50;"{% endif %}>
+                        {{ '%.1f'|format(stats1.FG_PCT * 100) }}%
+                    </td>
+                    <td>{{ stats2.FGM }}</td>
+                    <td>{{ stats2.FGA }}</td>
+                    <td {% if stats2.FG_PCT > stats1.FG_PCT and stats2.FGA > 0 %}style="background-color: rgba(39, 174, 96, 0.2);"{% endif %}>
+                        {{ '%.1f'|format(stats2.FG_PCT * 100) }}%
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
+
+    <!-- Comparison Chart -->
+    <div style="max-width: 1000px; margin: 40px auto; padding: 20px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Field Goal Percentage Comparison by Zone</h3>
+        <canvas id="comparisonChart"></canvas>
+    </div>
+
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+        
+        const zoneOrder = {{ zone_order|tojson }};
+        const player1Data = {{ player1_chart_data|tojson }};
+        const player2Data = {{ player2_chart_data|tojson }};
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: zoneOrder,
+                datasets: [
+                    {
+                        label: '{{ player1_name }} ({{ season1_id }})',
+                        data: player1Data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '{{ player2_name }} ({{ season2_id }})',
+                        data: player2Data,
+                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Field Goal Percentage (%)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Shot Zone Range',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 13
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</section>
+{% endblock %}

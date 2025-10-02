@@ -1,0 +1,5 @@
+Flask
+matplotlib
+nba_api
+python-dotenv
+plotly

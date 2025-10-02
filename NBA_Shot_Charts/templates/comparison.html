@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Players{% endblock %}
+
+{% block content %}
+<section>
+    <a href="{{ url_for('main.index') }}" role="button" class="secondary">← Back to Home</a>
+    
+    <h2 style="text-align: center;">Compare Two Players</h2>
+    <p style="text-align: center;">Select two players and their seasons to compare their shooting performance.</p>
+
+    {% if error %}
+    <article style="background-color: var(--pico-form-element-invalid-background-color); border-color: var(--pico-form-element-invalid-border-color);">
+        {{ error }}
+    </article>
+    {% endif %}
+
+    <form action="{{ url_for('main.comparison_result') }}" method="POST">
+        <div class="grid">
+            <!-- Player 1 -->
+            <div>
+                <fieldset>
+                    <legend><strong>Player 1</strong></legend>
+                    <label for="player1_name_input">
+                        Player Name
+                        <input list="player1-datalist" id="player1_name_input" name="player1_name" placeholder="e.g., Stephen Curry" required>
+                        <datalist id="player1-datalist"></datalist>
+                    </label>
+
+                    <label for="season1-select">
+                        Season
+                        <select name="season1_id" id="season1-select" required disabled>
+                            <option value="">-- Select a player first --</option>
+                        </select>
+                    </label>
+                </fieldset>
+            </div>
+
+            <!-- Player 2 -->
+            <div>
+                <fieldset>
+                    <legend><strong>Player 2</strong></legend>
+                    <label for="player2_name_input">
+                        Player Name
+                        <input list="player2-datalist" id="player2_name_input" name="player2_name" placeholder="e.g., LeBron James" required>
+                        <datalist id="player2-datalist"></datalist>
+                    </label>
+
+                    <label for="season2-select">
+                        Season
+                        <select name="season2_id" id="season2-select" required disabled>
+                            <option value="">-- Select a player first --</option>
+                        </select>
+                    </label>
+                </fieldset>
+            </div>
+        </div>
+        
+        <button type="submit" style="width: 100%;">Compare Players</button>
+    </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const player1Input = document.getElementById('player1_name_input');
+        const player1Datalist = document.getElementById('player1-datalist');
+        const season1Select = document.getElementById('season1-select');
+        
+        const player2Input = document.getElementById('player2_name_input');
+        const player2Datalist = document.getElementById('player2-datalist');
+        const season2Select = document.getElementById('season2-select');
+        
+        let playersData = [];
+
+        // Fetch all players
+        fetch("{{ url_for('main.api_players') }}")
+            .then(response => response.json())
+            .then(data => {
+                playersData = data;
+                data.forEach(player => {
+                    const option1 = document.createElement('option');
+                    option1.value = player.name;
+                    player1Datalist.appendChild(option1);
+
+                    const option2 = document.createElement('option');
+                    option2.value = player.name;
+                    player2Datalist.appendChild(option2);
+                });
+            });
+
+        // Player 1 change handler
+        player1Input.addEventListener('change', function() {
+            const selectedPlayerName = this.value;
+            const selectedPlayer = playersData.find(p => p.name === selectedPlayerName);
+
+            season1Select.innerHTML = '<option value="">Loading...</option>';
+            season1Select.disabled = true;
+
+            if (selectedPlayer) {
+                fetch(`/api/player/${selectedPlayer.id}/seasons`)
+                    .then(response => response.json())
+                    .then(seasons => {
+                        season1Select.innerHTML = '<option value="">-- Select a Season --</option>';
+                        seasons.forEach(season => {
+                            const option = document.createElement('option');
+                            option.value = season;
+                            option.textContent = season;
+                            season1Select.appendChild(option);
+                        });
+                        season1Select.disabled = false;
+                    });
+            } else {
+                season1Select.innerHTML = '<option value="">-- Select a player first --</option>';
+            }
+        });
+
+        // Player 2 change handler
+        player2Input.addEventListener('change', function() {
+            const selectedPlayerName = this.value;
+            const selectedPlayer = playersData.find(p => p.name === selectedPlayerName);
+
+            season2Select.innerHTML = '<option value="">Loading...</option>';
+            season2Select.disabled = true;
+
+            if (selectedPlayer) {
+                fetch(`/api/player/${selectedPlayer.id}/seasons`)
+                    .then(response => response.json())
+                    .then(seasons => {
+                        season2Select.innerHTML = '<option value="">-- Select a Season --</option>';
+                        seasons.forEach(season => {
+                            const option = document.createElement('option');
+                            option.value = season;
+                            option.textContent = season;
+                            season2Select.appendChild(option);
+                        });
+                        season2Select.disabled = false;
+                    });
+            } else {
+                season2Select.innerHTML = '<option value="">-- Select a player first --</option>';
+            }
+        });
+    });
+</script>
+{% endblock %}

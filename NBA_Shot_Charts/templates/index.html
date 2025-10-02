@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Search for a Player{% endblock %}
+
+{% block content %}
+<section>
+    <p style="text-align: center;">Enter an NBA player's name and select a season to generate their shot chart.</p>
+
+    {% if error %}
+    <article style="background-color: var(--pico-form-element-invalid-background-color); border-color: var(--pico-form-element-invalid-border-color);">
+        {{ error }}
+    </article>
+    {% endif %}
+
+    <form action="{{ url_for('main.result') }}" method="POST">
+        <label for="player_name_input">
+            Player Name
+            <input list="player-datalist" id="player_name_input" name="player_name" placeholder="e.g., Stephen Curry" required>
+            <datalist id="player-datalist"></datalist>
+        </label>
+
+        <label for="season-select">
+            Season
+            <select name="season_id" id="season-select" required disabled>
+                <option value="">-- Select a player first --</option>
+            </select>
+        </label>
+        
+        <button type="submit">Generate Chart</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('main.compare') }}" role="button" class="contrast">Compare Two Players</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // This JavaScript remains the same as before
+    document.addEventListener('DOMContentLoaded', function() {
+        const playerInput = document.getElementById('player_name_input');
+        const playerDatalist = document.getElementById('player-datalist');
+        const seasonSelect = document.getElementById('season-select');
+        let playersData = [];
+
+        fetch("{{ url_for('main.api_players') }}")
+            .then(response => response.json())
+            .then(data => {
+                playersData = data;
+                data.forEach(player => {
+                    const option = document.createElement('option');
+                    option.value = player.name;
+                    playerDatalist.appendChild(option);
+                });
+            });
+
+        playerInput.addEventListener('change', function() {
+            const selectedPlayerName = this.value;
+            const selectedPlayer = playersData.find(p => p.name === selectedPlayerName);
+
+            seasonSelect.innerHTML = '<option value="">Loading...</option>';
+            seasonSelect.disabled = true;
+
+            if (selectedPlayer) {
+                fetch(`/api/player/${selectedPlayer.id}/seasons`)
+                    .then(response => response.json())
+                    .then(seasons => {
+                        seasonSelect.innerHTML = '<option value="">-- Select a Season --</option>';
+                        seasons.forEach(season => {
+                            const option = document.createElement('option');
+                            option.value = season;
+                            option.textContent = season;
+                            seasonSelect.appendChild(option);
+                        });
+                        seasonSelect.disabled = false;
+                    });
+            } else {
+                 seasonSelect.innerHTML = '<option value="">-- Select a player first --</option>';
+            }
+        });
+    });
+</script>
+{% endblock %}

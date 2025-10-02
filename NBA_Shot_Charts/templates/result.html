@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section>
+    <div class="grid">
+        <a href="{{ url_for('main.index') }}" role="button" class="secondary">← New Search</a>
+        <a href="{{ url_for('main.compare') }}" role="button" class="contrast">Compare Players</a>
+    </div>
+    
+    <article>
+        <div class="grid">
+            <div style="text-align: center;">
+                <!-- Interactive Plotly Shot Chart -->
+                <div class="chart-container">
+                    {{ chart_html|safe }}
+                </div>
+            </div>
+
+            <div>
+                <hgroup>
+                    <h3>Shooting Details</h3>
+                    <h4>{{ title }}</h4>
+                </hgroup>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Shot Zone</th>
+                            <th>Made</th>
+                            <th>Attempted</th>
+                            <th>FG%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for zone, stats in personal_stats_by_zone.items() %}
+                        <tr>
+                            <td>{{ zone }}</td>
+                            <td>{{ stats.FGM }}</td>
+                            <td>{{ stats.FGA }}</td>
+                            <td>{{ '%.1f'|format(stats.FG_PCT * 100) }}%</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+
+    <!-- Add this section after your existing stats table -->
+    <div style="max-width: 1000px; margin: 40px auto; padding: 20px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="text-align: center; margin-bottom: 20px; color: #333;">Player vs League Average (FG% by Zone)</h3>
+        <canvas id="comparisonChart"></canvas>
+    </div>
+
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        // Fetch and render comparison chart
+        fetch('/api/player-comparison/{{ player_id }}/{{ season_id }}')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('comparisonChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.categories,
+                        datasets: [
+                            {
+                                label: 'Player FG%',
+                                data: data.player_values,
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'League Average FG%',
+                                data: data.league_avg,
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Field Goal Percentage (%)',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Shot Zone Range',
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 13
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error loading comparison data:', error);
+                document.getElementById('comparisonChart').parentElement.innerHTML = 
+                    '<p style="text-align: center; color: #999;">Unable to load comparison chart</p>';
+            });
+    </script>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NBA Shot Chart Visualizer{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1 style="text-align: center;">NBA Player Shot Chart Visualizer 🏀</h1>
+        </header>
+        {% block content %}{% endblock %}
+        <footer style="text-align: center; margin-top: 2rem; color: grey;">
+            <small>Powered by Flask & nba-api</small>
+        </footer>
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
