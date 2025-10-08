@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from . import data, plotting
+from . import data, plotting, ai_analysis
 
 import pandas as pd
 
@@ -115,6 +115,12 @@ def comparison_result():
                 player2_zone_stats[zone]['FG_PCT'] * 100 if zone in player2_zone_stats else 0
             )
 
+        # Generate AI comparison analysis
+        ai_comparison = ai_analysis.analyze_player_comparison(
+            player1_name, season1_id, player1_stats, player1_zone_stats,
+            player2_name, season2_id, player2_stats, player2_zone_stats
+        )
+
         return render_template('comparison_result.html',
                                player1_name=player1_name,
                                player2_name=player2_name,
@@ -128,7 +134,8 @@ def comparison_result():
                                player2_zone_stats=player2_zone_stats,
                                zone_order=zone_order,
                                player1_chart_data=player1_chart_data,
-                               player2_chart_data=player2_chart_data)
+                               player2_chart_data=player2_chart_data,
+                               ai_comparison=ai_comparison)
 
     except ValueError as ve:
         return render_template('comparison.html', error=str(ve))
@@ -156,7 +163,7 @@ def result():
             return render_template('index.html', error=f'{player_name} has no shot data for the {season_id} season.')
         
         title = f"{player_name} | {season_id} Regular Season"
-        chart_html = plotting.draw_plot(shot_df, title)  # Now returns HTML instead of base64
+        chart_html = plotting.draw_plot(shot_df, title)
 
         total_shots = len(shot_df)
         made_shots = shot_df['SHOT_MADE_FLAG'].sum()
@@ -190,16 +197,63 @@ def result():
         )
 
         personal_zone_stats = personal_zone_stats.sort_values('SHOT_ZONE_RANGE')
-
         personal_stats_by_zone = personal_zone_stats.set_index('SHOT_ZONE_RANGE').to_dict('index')
+
+        # Prepare league comparison data for AI analysis
+        league_comparison = None
+        try:
+            # Calculate player stats by zone
+            player_zone_stats = shot_df.groupby('SHOT_ZONE_RANGE').agg({
+                'SHOT_MADE_FLAG': ['sum', 'count']
+            }).reset_index()
+            player_zone_stats.columns = ['SHOT_ZONE_RANGE', 'FGM', 'FGA']
+            player_zone_stats['FG_PCT'] = (player_zone_stats['FGM'] / player_zone_stats['FGA'] * 100).round(1)
+            
+            # Calculate league average by zone
+            league_zone_stats = league_avg_df.groupby('SHOT_ZONE_RANGE').agg({
+                'FGM': 'sum',
+                'FGA': 'sum'
+            }).reset_index()
+            league_zone_stats['FG_PCT'] = (league_zone_stats['FGM'] / league_zone_stats['FGA'] * 100).round(1)
+            
+            categories = []
+            player_values = []
+            league_values = []
+            
+            for zone in zone_order:
+                player_row = player_zone_stats[player_zone_stats['SHOT_ZONE_RANGE'] == zone]
+                league_row = league_zone_stats[league_zone_stats['SHOT_ZONE_RANGE'] == zone]
+                
+                if not player_row.empty:
+                    categories.append(zone)
+                    player_values.append(float(player_row['FG_PCT'].iloc[0]))
+                    league_values.append(float(league_row['FG_PCT'].iloc[0]) if not league_row.empty else 0)
+            
+            league_comparison = {
+                'categories': categories,
+                'player_values': player_values,
+                'league_avg': league_values
+            }
+        except Exception as e:
+            print(f"Error preparing league comparison: {e}")
+
+        # Generate AI analysis
+        ai_report = ai_analysis.analyze_player_performance(
+            player_name, 
+            season_id, 
+            player_stats, 
+            personal_stats_by_zone,
+            league_comparison
+        )
 
         return render_template('result.html',
                                title=title,
-                               chart_html=chart_html,  # Changed from image_data
+                               chart_html=chart_html,
                                player_stats=player_stats,
                                personal_stats_by_zone=personal_stats_by_zone,
                                player_id=player_info['id'],
-                               season_id=season_id)
+                               season_id=season_id,
+                               ai_analysis=ai_report)
 
     except ValueError as ve:
         return render_template('index.html', error=str(ve))
@@ -264,8 +318,6 @@ def api_player_comparison(player_id, season_id):
         return jsonify({"error": str(e)}), 500
 
 
-# --- API Endpoints for Frontend ---
-# (These remain the same)
 @main_bp.route('/api/players')
 def api_players():
     players_list = data.get_all_players()

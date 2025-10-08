@@ -53,6 +53,22 @@
         <canvas id="comparisonChart"></canvas>
     </div>
 
+    <!-- AI Analysis Section - Moved Below -->
+    <article style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 2rem;">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <svg style="width: 28px; height: 28px; margin-right: 10px;" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/>
+            </svg>
+            <h3 style="margin: 0; color: white; font-size: 1.2rem;">🤖 AI Performance Analysis</h3>
+        </div>
+        <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 6px; backdrop-filter: blur(10px);">
+            <div class="ai-content" style="line-height: 1.7; font-size: 0.95rem;">{{ ai_analysis|safe }}</div>
+        </div>
+        <small style="opacity: 0.85; margin-top: 0.8rem; display: block; font-size: 0.85rem;">
+            ✨ Powered by Gemini 2.5 Pro
+        </small>
+    </article>
+
     <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>

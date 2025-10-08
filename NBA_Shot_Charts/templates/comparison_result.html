@@ -107,14 +107,31 @@
         <canvas id="comparisonChart"></canvas>
     </div>
 
+    <!-- AI Comparison Analysis Section - Moved Below -->
+    <article style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 2rem;">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <svg style="width: 28px; height: 28px; margin-right: 10px;" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+            </svg>
+            <h3 style="margin: 0; color: white; font-size: 1.2rem;">🤖 AI Comparative Analysis</h3>
+        </div>
+        <div style="background: rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 6px; backdrop-filter: blur(10px);">
+            <div class="ai-content" style="line-height: 1.7; font-size: 0.95rem;">{{ ai_comparison|safe }}</div>
+        </div>
+        <small style="opacity: 0.85; margin-top: 0.8rem; display: block; font-size: 0.85rem;">
+            ✨ Powered by Gemini 2.5 Pro
+        </small>
+    </article>
+
     <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>
         const ctx = document.getElementById('comparisonChart').getContext('2d');
         
-        const zoneOrder = {{ zone_order|tojson }};
-        const player1Data = {{ player1_chart_data|tojson }};
-        const player2Data = {{ player2_chart_data|tojson }};
+        const zoneOrder = {{ zone_order|tojson|safe }};
+        const player1Data = {{ player1_chart_data|tojson|safe }};
+        const player2Data = {{ player2_chart_data|tojson|safe }};
         
         new Chart(ctx, {
             type: 'bar',

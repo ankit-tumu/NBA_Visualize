@@ -3,3 +3,5 @@ matplotlib
 nba_api
 python-dotenv
 plotly
+google-generativeai
+markdown
