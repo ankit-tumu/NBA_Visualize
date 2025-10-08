@@ -9,10 +9,13 @@ An interactive web application for visualizing and comparing NBA player shooting
 ## Update #1 - AI Analysis & Enhanced Features ✨
 
 ### What's New
-- 🤖 **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.0 Flash
+- 🤖 **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.5 Pro
   - Comprehensive individual player analysis with strengths, weaknesses, and key insights
   - Concise head-to-head player comparisons with clear verdicts
   - Markdown-formatted reports with proper styling
+    
+ <img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/96f9a8a8-97ac-4eff-badc-e19b9b344405" />
+
   
 - 📅 **Modern Era Focus** - Data filtered to 2000 onwards
   - Season selection limited to 2000-present for better data quality
@@ -75,6 +78,8 @@ An interactive web application for visualizing and comparing NBA player shooting
 <img width="1526" height="1022" alt="image" src="https://github.com/user-attachments/assets/717e7408-7bc9-42e2-a927-7ef0e6f4c2fd" />
 
 <img width="1457" height="1025" alt="image" src="https://github.com/user-attachments/assets/d640ec03-ef29-4f18-8806-9b55b614e8b8" />
+
+<img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/08ee74b4-ac80-49bf-a40a-52837af9fb3d" />
 
 
 
