@@ -13,6 +13,9 @@ An interactive web application for visualizing and comparing NBA player shooting
   - Comprehensive individual player analysis with strengths, weaknesses, and key insights
   - Concise head-to-head player comparisons with clear verdicts
   - Markdown-formatted reports with proper styling
+    
+ <img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/96f9a8a8-97ac-4eff-badc-e19b9b344405" />
+
   
 - 📅 **Modern Era Focus** - Data filtered to 2000 onwards
   - Season selection limited to 2000-present for better data quality
