@@ -2,9 +2,12 @@
 
 An interactive web application for visualizing and comparing NBA player shooting performance across different seasons. Built with Flask, Plotly, and the official NBA API. Enhanced with AI-powered analysis using Google Gemini.
 
+**🌐 Live Demo: [https://nba-visualizer.onrender.com](https://nba-visualizer.onrender.com)**
+
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Flask](https://img.shields.io/badge/flask-latest-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Live](https://img.shields.io/badge/demo-live-brightgreen.svg)
 
 ## Update #1 - AI Analysis & Enhanced Features ✨
 
@@ -81,60 +84,13 @@ An interactive web application for visualizing and comparing NBA player shooting
 
 <img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/08ee74b4-ac80-49bf-a40a-52837af9fb3d" />
 
+## 🚀 Quick Start
 
+**Try it live:** [https://nba-visualizer.onrender.com](https://nba-visualizer.onrender.com)
 
+No installation required! Just visit the link above and start exploring NBA player shot charts and AI-powered analysis.
 
-
-## Installation
-
-### Prerequisites
-- Python 3.8+
-- pip
-
-### Setup
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/ankit-tumu/NBA_Visualize.git
-cd NBA_Visualize
-```
-
-2. **Create a virtual environment**
-```bash
-python -m venv venv
-
-# On Windows
-venv\Scripts\activate
-
-# On macOS/Linux
-source venv/bin/activate
-```
-
-3. **Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-4. **Set up environment variables**
-Create a `.env` file in the root directory:
-```bash
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-To get a Gemini API key:
-- Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-- Sign in with your Google account
-- Click "Create API Key"
-- Copy and paste into your `.env` file
-
-5. **Run the application**
-```bash
-python run.py
-```
-
-6. **Open your browser**
-Navigate to `http://localhost:8080`
-
-## Usage
+## How to Use
 
 ### Generate a Shot Chart
 
@@ -287,12 +243,52 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For issues, questions, or suggestions, please open an issue on GitHub.
 
-## Environment Variables
+## Local Development
 
-Required environment variables in `.env`:
+Want to run this locally or contribute? Follow these steps:
+
+### Prerequisites
+- Python 3.8+
+- pip
+- Google Gemini API key ([Get one here](https://aistudio.google.com/app/apikey))
+
+### Setup
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/ankit-tumu/NBA_Visualize.git
+cd NBA_Visualize
 ```
-GEMINI_API_KEY=your_api_key_here
+
+2. **Create a virtual environment**
+```bash
+python -m venv venv
+
+# On Windows
+venv\Scripts\activate
+
+# On macOS/Linux
+source venv/bin/activate
 ```
+
+3. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+4. **Set up environment variables**
+Create a `.env` file in the root directory:
+```bash
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+5. **Run the application**
+```bash
+python run.py
+```
+
+6. **Open your browser**
+Navigate to `http://localhost:8080`
 
 ## Author
 
