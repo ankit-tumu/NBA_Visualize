@@ -79,6 +79,8 @@ An interactive web application for visualizing and comparing NBA player shooting
 
 <img width="1457" height="1025" alt="image" src="https://github.com/user-attachments/assets/d640ec03-ef29-4f18-8806-9b55b614e8b8" />
 
+<img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/08ee74b4-ac80-49bf-a40a-52837af9fb3d" />
+
 
 
 
