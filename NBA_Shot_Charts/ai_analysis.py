@@ -10,7 +10,7 @@ genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
 def analyze_player_performance(player_name, season_id, player_stats, zone_stats, league_comparison):
     """
-    Generate AI analysis of a player's performance for a specific season.
+    Generate AI analysis of a player's performance for a specified season.
     
     Args:
         player_name: Player's full name
