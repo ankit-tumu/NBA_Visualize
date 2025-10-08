@@ -9,7 +9,7 @@ An interactive web application for visualizing and comparing NBA player shooting
 ## Update #1 - AI Analysis & Enhanced Features ✨
 
 ### What's New
-- 🤖 **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.0 Flash
+- 🤖 **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.5 Pro
   - Comprehensive individual player analysis with strengths, weaknesses, and key insights
   - Concise head-to-head player comparisons with clear verdicts
   - Markdown-formatted reports with proper styling
