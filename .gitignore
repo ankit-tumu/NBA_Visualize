@@ -113,3 +113,6 @@ credentials.json
 
 # Local development
 local_settings.py
+
+# Misc
+PRE_PUSH_CHECKLIST.md
