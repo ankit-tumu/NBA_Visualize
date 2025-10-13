@@ -64,7 +64,7 @@ Please provide a CONCISE analysis (100-150 words maximum) covering:
 Be direct and analytical. Focus only on the most important findings."""
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-pro')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
         # Convert Markdown to HTML for better formatting
         html_content = markdown.markdown(response.text, extensions=['nl2br', 'tables'])
@@ -135,7 +135,7 @@ Provide a CONCISE, DEFINITIVE analysis (100-150 words maximum):
 Be bold and decisive. Pick a winner and defend it. No hedging, no "it depends", no "both are great in different ways". CHOOSE ONE."""
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-pro')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
         # Convert Markdown to HTML for better formatting
         html_content = markdown.markdown(response.text, extensions=['nl2br', 'tables'])
