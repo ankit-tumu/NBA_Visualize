@@ -1,4 +1,4 @@
-# NBA Shot Chart Visualizer 🏀
+# NBA Shot Chart Visualizer
 
 An interactive web application for visualizing and comparing NBA player shooting performance across different seasons. Built with Flask, Plotly, and the official NBA API. Enhanced with AI-powered analysis using Google Gemini.
 
@@ -9,7 +9,7 @@ An interactive web application for visualizing and comparing NBA player shooting
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Live](https://img.shields.io/badge/demo-live-brightgreen.svg)
 
-## Update #1 - AI Analysis & Enhanced Features ✨
+## Update #1 - AI Analysis & Enhanced Features
 
 ### What's New
 - **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.5 Pro
