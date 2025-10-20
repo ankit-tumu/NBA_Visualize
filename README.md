@@ -2,7 +2,7 @@
 
 An interactive web application for visualizing and comparing NBA player shooting performance across different seasons. Built with Flask, Plotly, and the official NBA API. Enhanced with AI-powered analysis using Google Gemini.
 
-**🌐 Live Demo: [https://nba-visualizer.onrender.com](https://nba-visualizer.onrender.com)**
+**Live Demo: [https://nba-visualizer.onrender.com](https://nba-visualizer.onrender.com)**
 
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Flask](https://img.shields.io/badge/flask-latest-green.svg)
@@ -12,7 +12,7 @@ An interactive web application for visualizing and comparing NBA player shooting
 ## Update #1 - AI Analysis & Enhanced Features ✨
 
 ### What's New
-- 🤖 **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.5 Pro
+- **AI-Powered Performance Analysis** - Get intelligent insights from Google Gemini 2.5 Pro
   - Comprehensive individual player analysis with strengths, weaknesses, and key insights
   - Concise head-to-head player comparisons with clear verdicts
   - Markdown-formatted reports with proper styling
@@ -20,24 +20,24 @@ An interactive web application for visualizing and comparing NBA player shooting
  <img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/96f9a8a8-97ac-4eff-badc-e19b9b344405" />
 
   
-- 📅 **Modern Era Focus** - Data filtered to 2000 onwards
+- **Modern Era Focus** - Data filtered to 2000 onwards
   - Season selection limited to 2000-present for better data quality
   - Clear disclaimers on season dropdowns
   - Validation to prevent pre-2000 season selection
   
-- 📊 **Enhanced Visualizations**
+- **Enhanced Visualizations**
   - Improved Chart.js comparison charts with better formatting
   - Clean, readable AI analysis sections with white text on gradient backgrounds
   - Removed duplicate content for streamlined user experience
   
-- 🎨 **UI/UX Improvements**
+- **UI/UX Improvements**
   - Professional gradient backgrounds for AI analysis sections
   - Properly formatted Markdown rendering (headings, lists, bold/italic text)
   - Responsive design enhancements across all pages
 
 ## Features
 
-### 🤖 AI-Powered Analysis (NEW!)
+### AI-Powered Analysis (NEW!)
 - **Individual Player Analysis**: Deep dive into a player's shooting performance with AI-generated insights
   - Overall shooting efficiency assessment vs league average
   - Top 2 shooting strengths and main weakness identification
@@ -50,14 +50,14 @@ An interactive web application for visualizing and comparing NBA player shooting
   - Notable differences in shooting styles
   - Comprehensive yet concise 100-150 word comparisons
 
-### 📊 Individual Shot Charts
+### Individual Shot Charts
 - Interactive Plotly visualizations showing every shot attempt
 - Made shots (green circles) and missed shots (red X's)
 - Detailed zone-by-zone shooting statistics
 - Comparison with league average performance (2000+ seasons only)
 - Hover tooltips with shot distance and type
 
-### 🔄 Player Comparison
+### Player Comparison
 - Side-by-side shot chart comparisons
 - Compare any two players across different seasons (2000 onwards)
 - Zone-by-zone statistical breakdown
@@ -65,7 +65,7 @@ An interactive web application for visualizing and comparing NBA player shooting
 - Color-coded table highlighting better performance
 - AI-powered comparison analysis with clear verdicts
 
-### 🎯 Smart Features
+### Smart Features
 - Autocomplete player search
 - Dynamic season selection based on player career (2000+ only)
 - Real-time data from official NBA API
@@ -84,7 +84,7 @@ An interactive web application for visualizing and comparing NBA player shooting
 
 <img width="1841" height="652" alt="image" src="https://github.com/user-attachments/assets/08ee74b4-ac80-49bf-a40a-52837af9fb3d" />
 
-## 🚀 Quick Start
+## Quick Start
 
 **Try it live:** [https://nba-visualizer.onrender.com](https://nba-visualizer.onrender.com)
 
